@@ -1,0 +1,10 @@
+---
+- name: "Basic: install security updates"
+  apt: upgrade=dist
+
+- name: "Basic: install basic software"
+  apt: name=vim,snmp,snmpd
+
+- name: "Basic: install required software for compiling JICMP"
+  apt: name=autoconf,make,gcc
+

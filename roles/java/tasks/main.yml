@@ -1,0 +1,6 @@
+---
+- name: "JavaJDK: copy and extract Java JDK"
+  unarchive: src=jdk-8u51-linux-x64.tar.gz dest=/opt copy=yes
+
+- name: "Java JDK: rename java dir"
+  shell: mv /opt/jdk1.8.0_51 /opt/java

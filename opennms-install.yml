@@ -1,0 +1,9 @@
+---
+# OpenNMS single node
+- hosts: all
+  remote_user: root
+  roles:
+    - basics
+    - postgres
+    - java
+    - opennms

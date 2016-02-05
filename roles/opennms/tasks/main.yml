@@ -1,0 +1,30 @@
+---
+- name: "Jicmp4: copy and extract"
+  unarchive: src=jicmp-1.4.4.tar.gz dest=/opt copy=yes
+
+- name: "Jicmp4: install"
+  shell: cd /opt/jicmp-1.4.4 && ./configure --with-java=/opt/java && make && make install
+
+- name: "Jicmp6: copy and extract"
+  unarchive: src=jicmp6-1.2.3.tar.gz dest=/opt copy=yes
+
+- name: "Jicmp6: install"
+  shell: cd /opt/jicmp6-1.2.3 && ./configure  --with-java=/opt/java && make && make install
+
+- name: "OpenNMS: create directory /opt/opennms"
+  file:  path=/opt/opennms state=directory
+
+- name: "OpenNMS: copy and extract"
+  unarchive: src=opennms-17.0.0.tar.gz dest=/opt/opennms copy=yes
+
+- name: "OpenNMS: find java version"
+  shell: /opt/opennms/bin/runjava -s
+
+- name: "OpenNMS: setup database"
+  shell: /opt/opennms/bin/install -dis
+
+- name:  "OpenNMS: set link for init script"
+  file: state=link src=/opt/opennms/bin/opennms path=/etc/init.d/opennms
+
+- name:  "OpenNMS: install init script"
+  service: name=opennms enabled=yes
