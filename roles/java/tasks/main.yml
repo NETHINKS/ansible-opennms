@@ -1,6 +1,13 @@
 ---
-- name: "JavaJDK: copy and extract Java JDK"
-  unarchive: src=jdk-8u51-linux-x64.tar.gz dest=/opt copy=yes
+- name: "copy and extract"
+  unarchive: src={{ filename_jdk }} dest=/opt copy=yes
 
-- name: "Java JDK: rename java dir"
-  shell: mv /opt/jdk1.8.0_51 /opt/java
+- name: "get directory name of extracted content"
+  find: paths="/opt" patterns="jdk*" file_type=directory age="-1h" age_stamp=ctime
+  register: "jdk_dirs"
+
+- name: "set symlink /opt/java"
+  file: state=link src={{ item }} dest=/opt/java
+  with_items: 
+  - "{{ jdk_dirs.files.0.path }}"
+  when: "{{ jdk_dirs.matched }}  == 1"

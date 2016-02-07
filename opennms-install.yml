@@ -2,8 +2,15 @@
 # OpenNMS single node
 - hosts: all
   remote_user: root
+  vars:
+    repository_path: ./repository
+    filename_jicmp: "{{ repository_path }}/jicmp-1.4.4.tar.gz"
+    filename_jicmp6: "{{ repository_path }}/jicmp6-1.2.3.tar.gz"
+    filename_jdk: "{{ repository_path }}/jdk-8u51-linux-x64.tar.gz"
+    filename_opennms: "{{ repository_path }}/opennms-16.0.1-SNAPSHOT.tar.gz"
   roles:
     - basics
     - postgres
     - java
+    - jicmp
     - opennms
