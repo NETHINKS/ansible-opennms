@@ -1,3 +1,4 @@
 ---
 - name: "install security updates"
-  zypper: name=* state=latest
+  fail: msg="Automatic security updates are not supported yet. Please do it manually"
+  ignore_errors: True

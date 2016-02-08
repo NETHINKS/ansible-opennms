@@ -1,4 +1,12 @@
 ---
+- name: "workaround for os_family openSUSE Leap"
+  set_fact: ansible_os_family=Suse
+  when: ansible_os_family == "openSUSE Leap"
+
+- name: "distribution supported?"
+  fail: msg="your os_family is not supported by this playbook. Supported os_families are Debian, RedHat, Suse"
+  when: (ansible_os_family != "Debian") and (ansible_os_family != "RedHat") and (ansible_os_family != "Suse")
+
 - name: "OpenNMS exists?"
   find: pattern="opennms" paths="/opt,/usr/share" file_type=directory
   register: find_opennms_result
@@ -7,7 +15,7 @@
   find: pattern="jdk*" paths={{ install_path }} file_type=directory
   register: find_jdk_result
 
-- name: "Check Results"
+- name: "check Results"
   fail: msg="OpenNMS or Java installation found, please check"
   when: "{{ item }}  == 1"
   with_items:

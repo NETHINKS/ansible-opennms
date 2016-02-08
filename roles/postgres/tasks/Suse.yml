@@ -1,3 +1,9 @@
 ---
 - name: "install database server"
-  zypper: name=postgresql state=present
+  zypper: name={{ item }} state=present
+  with_items:
+  - postgresql
+  - postgresql-server
+
+- name: "init database cluster"
+  service: name=postgresql state=restarted enabled=yes
