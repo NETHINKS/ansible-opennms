@@ -2,10 +2,10 @@
 - include: "{{ ansible_os_family }}.yml"
 
 - name: "check availability of NTP server"
-  command: ntpdate {{ ntp_server }}
+  command: /usr/sbin/ntpdate {{ ntp_server }}
   register: ntp_result
   ignore_errors: True
 
 - name: "install ntpdate cronjob"
-  cron: name="ntp sync" minute="0" job="ntpdate {{ ntp_server }} > /dev/null"
+  cron: name="ntp sync" minute="0" job="/usr/sbin/ntpdate {{ ntp_server }} > /dev/null"
   when: "'no servers can be used' not in ntp_result.stderr"

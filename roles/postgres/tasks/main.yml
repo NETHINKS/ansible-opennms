@@ -10,10 +10,10 @@
            regexp={{ item }} replace='\1trust'
            backup=yes
   with_items:
-  - '^(host.*?all.*?all.*?127.*?)(md5)$'
-  - '^(host.*?all.*?all.*?::1/128.*?)(md5)$'
-  - '^(local.*?all.*?all.*?)(peer)$'
+  - '^(host.*?all.*?all.*?127.*?)(md5|ident)$'
+  - '^(host.*?all.*?all.*?::1/128.*?)(md5|ident)$'
+  - '^(local.*?all.*?all.*?)(peer|ident|md5)$'
   when: "{{ pg_hba_conf.matched }}  == 1"
 
 - name: "restart PostgreSQL"
-  service: name=postgresql state=restarted
+  service: name=postgresql state=restarted enabled=yes

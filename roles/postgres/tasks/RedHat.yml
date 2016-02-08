@@ -1,3 +1,10 @@
 ---
 - name: "install database server"
-  yum: name=postgresql state=present
+  yum: name={{ item }} state=present
+  with_items:
+  - postgresql
+  - postgresql-server
+
+- name: "create new database cluster"
+  command: postgresql-setup initdb
+  ignore_errors: True
