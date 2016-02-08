@@ -1,0 +1,3 @@
+---
+- name: "install security updates"
+  apt: upgrade=dist

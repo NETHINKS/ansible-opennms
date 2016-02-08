@@ -1,0 +1,6 @@
+---
+- name: "install software"
+  zypper: name={{ item }} state=present
+  with_items:
+  - snmp
+  - snmpd

@@ -1,0 +1,7 @@
+---
+- name: "install required packages for compiling jicmp"
+  yum: name={{ item }} state=present
+  with_items:
+  - autoconf
+  - make
+  - gcc

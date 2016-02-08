@@ -8,8 +8,14 @@
     filename_jicmp6: "{{ repository_path }}/jicmp6-1.2.3.tar.gz"
     filename_jdk: "{{ repository_path }}/jdk-8u51-linux-x64.tar.gz"
     filename_opennms: "{{ repository_path }}/opennms-16.0.1-SNAPSHOT.tar.gz"
+    snmpd_community: public
+    snmpd_location: Datacenter
+    snmpd_contact: Support
+    ntp_server: pool.ntp.org
   roles:
-    - basics
+    - package_updates
+    - snmp
+    - ntpdate
     - postgres
     - java
     - jicmp

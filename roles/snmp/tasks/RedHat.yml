@@ -1,0 +1,6 @@
+---
+- name: "install software"
+  yum: name={{ item }} state=present
+  with_items:
+  - snmp
+  - snmpd

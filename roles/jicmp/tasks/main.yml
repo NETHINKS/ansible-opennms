@@ -1,4 +1,6 @@
 ---
+- include: "{{ ansible_os_family  }}.yml"
+
 - name: "copy and extract jicmp4"
   unarchive: src={{ filename_jicmp }} dest=/opt copy=yes
 

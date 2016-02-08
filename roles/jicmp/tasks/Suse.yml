@@ -1,0 +1,7 @@
+---
+- name: "install required packages for compiling jicmp"
+  zypper: name={{ item }} state=present
+  with_items:
+  - autoconf
+  - make
+  - gcc

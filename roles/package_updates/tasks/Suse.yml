@@ -1,0 +1,3 @@
+---
+- name: "install security updates"
+  zypper: name=* state=latest

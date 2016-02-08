@@ -1,0 +1,3 @@
+---
+- name: "install database server"
+  yum: name=postgresql state=present

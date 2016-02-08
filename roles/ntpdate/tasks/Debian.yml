@@ -1,0 +1,3 @@
+---
+- name: "install ntpdate"
+  apt: name=ntpdate

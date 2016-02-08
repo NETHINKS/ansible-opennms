@@ -1,21 +1,19 @@
 ---
-- name: "PostgreSQL: install database server"
-  apt: name=postgresql
+- include: "{{ ansible_os_family }}.yml"
 
-- name: "PostgreSQL: setup database access: local"
-  replace: dest=/etc/postgresql/9.3/main/pg_hba.conf 
-           regexp='^(local.*?all.*?all.*?)(peer)$' replace='\1trust'
+- name: "find pg_hba.conf"
+  find: patterns="pg_hba.conf" recurse=yes paths={{ pg_dirs }}
+  register: pg_hba_conf
+
+- name: "setup database access"
+  replace: dest={{ pg_hba_conf.files.0.path }}
+           regexp={{ item }} replace='\1trust'
            backup=yes
+  with_items:
+  - '^(host.*?all.*?all.*?127.*?)(md5)$'
+  - '^(host.*?all.*?all.*?::1/128.*?)(md5)$'
+  - '^(local.*?all.*?all.*?)(peer)$'
+  when: "{{ pg_hba_conf.matched }}  == 1"
 
-- name: "PostgreSQL: setup database access: host 127.0.0.1"
-  replace: dest=/etc/postgresql/9.3/main/pg_hba.conf 
-           regexp='^(host.*?all.*?all.*?127.*?)(md5)$' replace='\1trust'
-           backup=yes
-
-- name: "PostgreSQL: setup database access: host ::1/128"
-  replace: dest=/etc/postgresql/9.3/main/pg_hba.conf 
-           regexp='^(host.*?all.*?all.*?::1/128.*?)(md5)$' replace='\1trust'
-           backup=yes
-
-- name: "PostgreSQL: restart PostgreSQL"
+- name: "restart PostgreSQL"
   service: name=postgresql state=restarted

@@ -1,0 +1,16 @@
+---
+- include: "{{ ansible_os_family }}.yml"
+
+- name: "find original snmpd.conf"
+  find: paths={{ snmpd_paths }} patterns="snmpd.conf" recurse=yes
+  register: snmpd_conf
+
+- name: "stop snmpd"
+  service: name=snmpd state=stopped
+
+- name: "create new snmpd.conf"
+  template: src=snmpd.conf dest={{ snmpd_conf.files.0.path }} backup=yes
+  when: "{{ snmpd_conf.matched }} == 1"
+
+- name: "start snmpd"
+  service: name=snmpd state=started
