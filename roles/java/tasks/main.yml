@@ -1,13 +1,13 @@
 ---
 - name: "copy and extract"
-  unarchive: src={{ filename_jdk }} dest=/opt copy=yes
+  unarchive: src={{ filename_jdk }} dest={{ install_path}} copy=yes
 
 - name: "get directory name of extracted content"
-  find: paths="/opt" patterns="jdk*" file_type=directory age="-1h" age_stamp=ctime
+  find: paths={{ install_path}} patterns="jdk*" file_type=directory age="-1h" age_stamp=ctime
   register: "jdk_dirs"
 
 - name: "set symlink /opt/java"
-  file: state=link src={{ item }} dest=/opt/java
+  file: state=link src={{ item }} dest="{{install_path}}/java"
   with_items: 
   - "{{ jdk_dirs.files.0.path }}"
   when: "{{ jdk_dirs.matched }}  == 1"

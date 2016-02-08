@@ -1,18 +1,18 @@
 ---
-- name: "create directory /opt/opennms"
-  file:  path=/opt/opennms state=directory
+- name: "create directory {{ install_path }}/opennms"
+  file:  path="{{ install_path }}/opennms" state=directory
 
 - name: "copy and extract OpenNMS archive"
-  unarchive: src={{ filename_opennms }} dest=/opt/opennms copy=yes
+  unarchive: src={{ filename_opennms }} dest="{{ install_path }}/opennms" copy=yes
 
 - name: "find java version"
-  shell: /opt/opennms/bin/runjava -s
+  shell: "{{ install_path }}/opennms/bin/runjava -s"
 
 - name: "setup database"
-  shell: /opt/opennms/bin/install -dis
+  shell: "{{ install_path }}/opennms/bin/install -dis"
 
 - name:  "set link for init script"
-  file: state=link src=/opt/opennms/bin/opennms path=/etc/init.d/opennms
+  file: state=link src="{{install_path }}/opennms/bin/opennms" path=/etc/init.d/opennms
 
 - name:  "install init script"
   service: name=opennms enabled=yes

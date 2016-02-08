@@ -1,0 +1,15 @@
+---
+- name: "OpenNMS exists?"
+  find: pattern="opennms" paths="/opt,/usr/share" file_type=directory
+  register: find_opennms_result
+
+- name: "Java exists?"
+  find: pattern="jdk*" paths={{ install_path }} file_type=directory
+  register: find_jdk_result
+
+- name: "Check Results"
+  fail: msg="OpenNMS or Java installation found, please check"
+  when: "{{ item }}  == 1"
+  with_items:
+  - find_opennms_result.matched
+  - find_jdk_result.matched

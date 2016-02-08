@@ -2,25 +2,25 @@
 - include: "{{ ansible_os_family  }}.yml"
 
 - name: "copy and extract jicmp4"
-  unarchive: src={{ filename_jicmp }} dest=/opt copy=yes
+  unarchive: src={{ filename_jicmp }} dest={{ install_path }} copy=yes
 
 - name: "get directory name of extracted jicmp4"
-  find: paths="/opt" patterns="jicmp-*" file_type=directory age="-1h" age_stamp=ctime
+  find: paths={{ install_path }} patterns="jicmp-*" file_type=directory age="-1h" age_stamp=ctime
   register: "jicmp_dirs"
 
 - name: "compile and install jicmp4"
-  shell: cd {{ item }} && ./configure --with-java=/opt/java && make && make install
+  shell: cd {{ item }} && ./configure --with-java={{ install_path }}/java && make && make install
   with_items: "{{ jicmp_dirs.files.0.path }}"
   when: "{{ jicmp_dirs.matched  }} == 1"
 
 - name: "copy and extract jimcp6"
-  unarchive: src={{ filename_jicmp6 }}  dest=/opt copy=yes
+  unarchive: src={{ filename_jicmp6 }}  dest={{ install_path }} copy=yes
 
 - name: "get directory name of extracted jicmp6"
-  find: paths="/opt" patterns="jicmp6-*" file_type=directory age="-1h" age_stamp=ctime
+  find: paths={{ install_path }} patterns="jicmp6-*" file_type=directory age="-1h" age_stamp=ctime
   register: "jicmp6_dirs"
 
 - name: "compile and install jicmp6"
-  shell: cd {{ item }} && ./configure --with-java=/opt/java && make && make install
+  shell: cd {{ item }} && ./configure --with-java={{ install_path }}/java && make && make install
   with_items: "{{ jicmp6_dirs.files.0.path }}"
   when: "{{ jicmp6_dirs.matched  }} == 1"
