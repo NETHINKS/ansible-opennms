@@ -7,17 +7,28 @@
   fail: msg="your os_family is not supported by this playbook. Supported os_families are Debian, RedHat, Suse"
   when: (ansible_os_family != "Debian") and (ansible_os_family != "RedHat") and (ansible_os_family != "Suse")
 
-- name: "OpenNMS exists?"
-  find: pattern="opennms" paths="/opt,/usr/share" file_type=directory
-  register: find_opennms_result
-
-- name: "Java exists?"
-  find: pattern="jdk*" paths={{ install_path }} file_type=directory
-  register: find_jdk_result
-
-- name: "check Results"
-  fail: msg="OpenNMS or Java installation found, please check"
-  when: "{{ item }}  == 1"
+- name: "all files for setup exist on local machine?"
+  local_action: stat path={{ item }}
+  register: check_setupfiles
   with_items:
-  - find_opennms_result.matched
-  - find_jdk_result.matched
+  - "{{ filename_jicmp }}"
+  - "{{ filename_jicmp6 }}"
+  - "{{ filename_jdk }}"
+  - "{{ filename_opennms }}"
+
+- name: "result: all files for setup exist on local machine?"
+  fail: msg="some files for setup does not exist on local machine {{ item }}"
+  when: "{{ item.stat.exists }} == false"
+  with_items: check_setupfiles.results
+
+- name: "OpenNMS or Java does not exist in install path?"
+  find: pattern={{ item.pattern }} paths={{ item.paths }} file_type=directory
+  register: check_existingfiles
+  with_items:
+  - { pattern: "opennms", paths: "/opt,/usr/share,{{ install_path }}" }
+  - { pattern: "jdk*", paths: "{{ install_path }}" }
+
+- name: "result: OpenNMS or Java does not exist in install path?"
+  fail: msg="OpenNMS or Java installation found, please check"
+  when: "{{ item.matched }}  == 1"
+  with_items: check_existingfiles.results
