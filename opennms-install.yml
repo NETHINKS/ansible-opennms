@@ -2,17 +2,43 @@
 # OpenNMS single node
 - hosts: all
   remote_user: root
-  vars:
-    repository_path: ./repository
-    filename_jicmp: "{{ repository_path }}/jicmp-1.4.4.tar.gz"
-    filename_jicmp6: "{{ repository_path }}/jicmp6-1.2.3.tar.gz"
-    filename_jdk: "{{ repository_path }}/jdk-8u51-linux-x64.tar.gz"
-    filename_opennms: "{{ repository_path }}/opennms-16.0.1-SNAPSHOT.tar.gz"
-    install_path: /opt
-    snmpd_community: public
-    snmpd_location: Datacenter
-    snmpd_contact: Support
-    ntp_server: pool.ntp.org
+  vars_prompt:
+  - name: "filename_jicmp"
+    prompt: "jicmp archive file"
+    default: "./repository/jicmp-1.4.4.tar.gz"
+    private: no
+  - name: "filename_jicmp6"
+    prompt: "jicmp6 archive file"
+    default: "./repository/jicmp6-1.2.3.tar.gz"
+    private: no
+  - name: "filename_jdk"
+    prompt: "Oracle Java JDK archive file"
+    default: "./repository/jdk-8u51-linux-x64.tar.gz"
+    private: no
+  - name: "filename_opennms"
+    prompt: "OpenNMS archive file"
+    default: "./repository/opennms-17.0.0.tar.gz"
+    private: no
+  - name: "install_path"
+    prompt: "path for installing"
+    default: "/opt"
+    private: no
+  - name: "ntp_server"
+    prompt: "NTP: set NTP server"
+    default: "pool.ntp.org"
+    private: no
+  - name: "snmpd_community"
+    prompt: "SNMP: set community"
+    default: "public"
+    private: no
+  - name: "snmpd_location"
+    prompt: "SNMP: set SysLocation"
+    default: "Datacenter"
+    private: no
+  - name: "snmpd_contact"
+    prompt: "SNMP: set SysContact"
+    default: "Support"
+    private: no
   roles:
     - precheck
     - package_updates
