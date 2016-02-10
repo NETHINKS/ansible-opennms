@@ -1,0 +1,6 @@
+---
+- name: "initd: set link for init script"
+  file: state=link src="{{install_path }}/opennms/bin/opennms" path=/etc/init.d/opennms
+
+- name:  "initd: install start script"
+  service: name=opennms enabled=yes

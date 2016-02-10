@@ -11,17 +11,12 @@
 - name: "setup database"
   shell: "{{ install_path }}/opennms/bin/install -dis"
 
-- name: "set link for init script"
-  file: state=link src="{{install_path }}/opennms/bin/opennms" path=/etc/init.d/opennms
-  when: ansible_os_family == "Debian" or ansible_os_family == "Suse"
+- name: "check if systemd manages services"
+  find: pattern="system" paths="/etc/systemd" file_type=directory
+  register:  check_systemd
 
-- name: "install systemd script"
-  copy: src="{{install_path }}/opennms/etc/opennms.service" dest=/etc/systemd/system remote_src=yes
-  when: ansible_os_family == "RedHat"
+- include: install-initd-script.yml
+  when: "{{ check_systemd.matched }}  != 1"
 
-- name: "reload systemd"
-  command: systemctl daemon-reload
-  when: ansible_os_family == "RedHat"
-
-- name:  "install start script"
-  service: name=opennms enabled=yes
+- include: install-systemd-script.yml
+  when: "{{ check_systemd.matched }}  == 1"

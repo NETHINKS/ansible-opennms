@@ -1,0 +1,9 @@
+---
+- name: "systemd: install start script"
+  copy: src="{{install_path }}/opennms/etc/opennms.service" dest=/etc/systemd/system remote_src=yes
+
+- name: "systemd: reload configuration"
+  command: systemctl daemon-reload
+
+- name: "systemd: enable automatic start"
+  command: systemctl enable opennms
