@@ -16,7 +16,7 @@
   register:  check_systemd
 
 - include: install-initd-script.yml
-  when: "{{ check_systemd.matched }}  != 1"
+  when: ansible_os_family == "Debian" or ansible_os_family == "Suse"
 
 - include: install-systemd-script.yml
-  when: "{{ check_systemd.matched }}  == 1"
+  when: ansible_os_family == "RedHat"
