@@ -1,4 +1,13 @@
 ---
+- name: "check if local hostname is in /etc/hosts"
+  command: getent hosts {{ ansible_hostname }}
+  register: check_hosts
+  ignore_errors: True
+
+- name: "insert local hostname in /etc/hosts"
+  lineinfile: dest=/etc/hosts insertafter=EOF line="127.0.0.1  {{ ansible_hostname }}"
+  when: check_hosts.rc != 0
+
 - name: "create directory {{ install_path }}/opennms"
   file:  path="{{ install_path }}/opennms" state=directory
 
