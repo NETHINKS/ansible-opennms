@@ -15,7 +15,7 @@ If you want to use this playbook, you need to download the following software. P
 - Jicmp4 (as .tar.gz)
 - Jicmp6 (as .tar.gz)
 - Oracle Java JDK (as .tar.gz)
-- OpenNMS (as .tar.gz)
+- OpenNMS (as .tar.gz / see http://www.opennms.org/wiki/Installation:Source for creating)
 
 For adhoc executing the playbook on a remote machine with login and password:
 ```
@@ -23,7 +23,9 @@ ansible-playbook -i <Host>, -k opennms-install.yml
 ansible-playbook -i 192.168.0.11, -k opennms-install.yml 
 ```
 For adhoc executing the playbook on the local machine:
+```
 ansible-playbook -i localhost, -c local opennms-install.yml 
+```
 
 After starting, the user will be asked to set a few variables:
 <table>
