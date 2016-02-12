@@ -13,7 +13,7 @@
     private: no
   - name: "filename_jdk"
     prompt: "Oracle Java JDK archive file"
-    default: "./repository/jdk-8u51-linux-x64.tar.gz"
+    default: "./repository/jdk-8u74-linux-x64.tar.gz"
     private: no
   - name: "filename_opennms"
     prompt: "OpenNMS archive file"
