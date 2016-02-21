@@ -1,0 +1,13 @@
+---
+- name: "add RPM repositories"
+  yum: name={{ opennms_rpm_repos}} state=present update_cache=yes
+  ignore_errors: true
+
+- name: "install OpenNMS with all dependencies"
+  yum: name=opennms state=present
+
+- name: "systemd: enable automatic start"
+  command: systemctl enable opennms
+
+- name: "set install_path"
+  set_fact: install_path={{ opennms_rpm_install_path}}
