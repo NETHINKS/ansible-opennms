@@ -1,0 +1,16 @@
+---
+- name: "add key for APT repository"
+  apt_key: url={{ opennms_deb_key}}
+
+- name: "add APT repository"
+  apt_repository: repo={{ item }}
+  with_items: "{{ opennms_deb_repos }}"
+
+- name: "accept Oracle Java 8 licence"
+  debconf: name=oracle-java8-installer question='shared/accepted-oracle-license-v1-1' value='true' vtype='select'
+
+- name: "install OpenNMS with all dependencies"
+  apt: name=opennms state=present
+
+- name: "set install_path"
+  set_fact: install_path={{ opennms_deb_install_path}}

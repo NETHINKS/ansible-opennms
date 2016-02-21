@@ -1,0 +1,27 @@
+---
+# OpenNMS single node
+- hosts: all
+  remote_user: root
+  vars_prompt:
+  - name: "ntp_server"
+    prompt: "NTP: set NTP server"
+    default: "pool.ntp.org"
+    private: no
+  - name: "snmpd_community"
+    prompt: "SNMP: set community"
+    default: "public"
+    private: no
+  - name: "snmpd_location"
+    prompt: "SNMP: set SysLocation"
+    default: "Datacenter"
+    private: no
+  - name: "snmpd_contact"
+    prompt: "SNMP: set SysContact"
+    default: "Support"
+    private: no
+  roles:
+    - package_updates
+    - snmp
+    - ntpdate
+    - postgres
+    - opennms.packaging

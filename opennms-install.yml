@@ -47,4 +47,4 @@
     - postgres
     - java
     - jicmp
-    - opennms
+    - opennms.archive
