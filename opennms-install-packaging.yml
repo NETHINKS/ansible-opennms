@@ -20,6 +20,7 @@
     default: "Support"
     private: no
   roles:
+    - precheck.packaging
     - package_updates
     - snmp
     - ntpdate

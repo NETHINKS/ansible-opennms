@@ -1,0 +1,15 @@
+---
+- name: "distribution supported?"
+  fail: msg="your os_family is not supported by this playbook. Supported os_families are Debian, RedHat"
+  when: (ansible_os_family != "Debian") and (ansible_os_family != "RedHat")
+
+- name: "OpenNMS does not exist on target machine?"
+  find: pattern={{ item.pattern }} paths={{ item.paths }} file_type=directory
+  register: check_existingfiles
+  with_items:
+  - { pattern: "opennms", paths: "/opt,/usr/share" }
+
+- name: "result: OpenNMS does not exist on target machine?"
+  fail: msg="OpenNMS installation found, please check"
+  when: "{{ item.matched }}  == 1"
+  with_items: check_existingfiles.results

@@ -40,7 +40,7 @@
     default: "Support"
     private: no
   roles:
-    - precheck
+    - precheck.archive
     - package_updates
     - snmp
     - ntpdate
